@@ -1,0 +1,12 @@
+﻿<Project Sdk="Mono.WebAssembly.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Remove="index.html" />
+    <None Remove="mono_support.js" />
+  </ItemGroup>
+  
+</Project>
