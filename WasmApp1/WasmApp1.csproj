@@ -5,6 +5,10 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <PackageReference Include="System.CodeDom" Version="4.5.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <None Remove="index.html" />
     <None Remove="mono_support.js" />
   </ItemGroup>
