@@ -1,28 +1,55 @@
 ﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using WebAssembly;
 
 namespace WasmApp1
 {
     internal class Program
     {
-        private static void Main()
+        private static TaskCompletionSource<bool> taskCompletionSource;
+
+        private static async void Main()
         {
-            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var body = (JSObject)document.GetObjectProperty("body"))
-            using (var button = (JSObject)document.Invoke("createElement", "button"))
+            const string root = "/persistent_data";
+
+            // IndexedDB doesn't work in private mode under Firefox
+            var fs = (JSObject)Runtime.GetGlobalObject("FS");
+            fs.Invoke("mkdir", root);
+            fs.Invoke("mount", Runtime.GetGlobalObject("IDBFS"), new WebAssembly.Core.Array(), root);
+            var onSyncfsCallback = new Action<JSObject>(OnSyncfs);
+            taskCompletionSource = new TaskCompletionSource<bool>();
+            fs.Invoke("syncfs", true, onSyncfsCallback);
+            var isSyncSuccess = await taskCompletionSource.Task;
+
+            if (!isSyncSuccess)
             {
-                button.SetObjectProperty("innerHTML", "Click me!");
-                button.SetObjectProperty(
-                    "onclick", 
-                    new Action<JSObject>(_ => 
-                    {
-                        using (var window = (JSObject)Runtime.GetGlobalObject())
-                        {
-                            window.Invoke("alert", "Hello, Wasm!");
-                        }
-                    }));
-                body.Invoke("appendChild", button);
+                return;
             }
+
+            var path = $"{root}/foo.txt";
+
+            if (File.Exists(path))
+            {
+                var content = File.ReadAllText(path);
+                Console.WriteLine(content);
+            }
+
+            File.WriteAllText(path, DateTime.UtcNow.ToString());
+
+            taskCompletionSource = new TaskCompletionSource<bool>();
+            fs.Invoke("syncfs", false, onSyncfsCallback);
+        }
+
+        public static void OnSyncfs(JSObject value)
+        {
+            if (value != null)
+            {
+                taskCompletionSource.SetResult(false);
+                return;
+            }
+
+            taskCompletionSource.SetResult(true);
         }
     }
 }
