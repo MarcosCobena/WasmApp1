@@ -6,6 +6,7 @@
         <link 
             rel="stylesheet" 
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <script src="https://unpkg.com/canvaskit-wasm@0.11.0/bin/canvaskit.js"></script>
         <script src="runtime.js"></script>
         <script defer src="mono.js"></script>
     </head>
@@ -17,6 +18,17 @@
         </div>
 
         <script type="text/javascript">
+            var CanvasKitHandle = null;
+
+            CanvasKitInit({
+                locateFile: (file) => 'https://unpkg.com/canvaskit-wasm@0.11.0/bin/' + file,
+            })
+                .ready()
+                .then((CanvasKit) => {
+                    CanvasKitHandle = CanvasKit;
+                    console.log('CanvasKit initialized');
+                });
+
             var App = {
                 init: function () {
                     var feedback = document.getElementById("feedback-body");
