@@ -1,3 +1,4 @@
+*.user
 .vs
 bin/
 obj/
