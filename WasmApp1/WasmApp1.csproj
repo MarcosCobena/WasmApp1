@@ -5,7 +5,16 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <None Remove="comunidad_madrid.dwg" />
     <None Remove="index.html" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="comunidad_madrid.dwg" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Aspose.CAD" Version="20.4.0" />
   </ItemGroup>
   
 </Project>

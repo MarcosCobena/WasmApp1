@@ -1,5 +1,6 @@
-﻿using System;
-using WebAssembly;
+﻿using Aspose.CAD;
+using System;
+using System.Reflection;
 
 namespace WasmApp1
 {
@@ -7,22 +8,20 @@ namespace WasmApp1
     {
         private static void Main()
         {
-            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var body = (JSObject)document.GetObjectProperty("body"))
-            using (var button = (JSObject)document.Invoke("createElement", "button"))
+            var assembly = Assembly.GetExecutingAssembly();
+
+            // DWG taken from: https://www.bloquesautocad.com/mapa-provincia-madrid/
+            using (var stream = assembly.GetManifestResourceStream("WasmApp1.comunidad_madrid.dwg"))
             {
-                button.SetObjectProperty("innerHTML", "Click me!");
-                button.SetObjectProperty(
-                    "onclick", 
-                    new Action<JSObject>(_ => 
-                    {
-                        using (var window = (JSObject)Runtime.GetGlobalObject())
-                        {
-                            window.Invoke("alert", "Hello, Wasm!");
-                        }
-                    }));
-                body.Invoke("appendChild", button);
+                var loadOptions = new LoadOptions 
+                { 
+                    // Uncomment to workaround the 1252 encoding error; however, another will surface
+                    //SpecifiedEncoding = CodePages.Utf8 
+                };
+                var image = Image.Load(stream, loadOptions);
             }
+            
+            Console.WriteLine("Success!");
         }
     }
 }
