@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <!--
+      https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/blazor/configure-linker?view=aspnetcore-3.1#configure-the-linker-for-internationalization
+      1252 belongs to west: https://github.com/mono/mono/blob/master/mcs/class/I18N/West/CP1252.cs
+    -->
+    <MonoWasmI18n>west</MonoWasmI18n>
   </PropertyGroup>
   
   <ItemGroup>
