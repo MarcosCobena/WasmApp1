@@ -8,6 +8,9 @@ namespace WasmApp1
     {
         private static void Main()
         {
+            // Uncomment to workaround missing WebAssembly.Bindings assembly when disabling linker
+            //WebAssembly.JSObject x = null;
+
             var assembly = Assembly.GetExecutingAssembly();
 
             // DWG taken from: https://www.bloquesautocad.com/mapa-provincia-madrid/
