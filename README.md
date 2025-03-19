@@ -1,3 +1,5 @@
+**IMPORTANT:** It is 2025 and the are much better, and more updated, approaches to .NET in Wasm: see [Uno.Wasm.Bootstrap](https://github.com/unoplatform/uno.wasm.bootstrap) or [Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor), for instance.
+
 # Your first Wasm app with C#
 
 __Originally posted on [Marcos Cobeña](https://github.com/MarcosCobena)'s [blog, 6/7/2019](https://marcoscobena.com/?i=wasmapp1)__
